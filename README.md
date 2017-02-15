@@ -7,6 +7,6 @@ export JENKINS_BASE_URL=http://<JENKINS_HOSTNAME>
 export JENKINS_USERNAME=<USERNAME>
 export JENKINS_TOKEN=<TOKEN>
 
-./jenkins-status <JOB_NAME>
+jenkins-status <JOB_NAME>
 ...
 ```
