@@ -63,15 +63,21 @@ func (s status) String() string {
 	b := bytes.NewBuffer(nil)
 	w := tabwriter.NewWriter(b, 8, 8, 1, '\t', 0)
 
-	fmt.Fprintf(w, "Name\t%v\n", s.JobName)
-	fmt.Fprintf(w, "URL\t%v\n", s.URL)
-	fmt.Fprintf(w, "Building\t%v\n", s.Building)
-	fmt.Fprintf(w, "Result\t%v\n", *s.Result)
+	if s.Building {
+		fmt.Fprintf(w, "Name\t%v\n", s.JobName)
+		fmt.Fprintf(w, "URL\t%v\n", s.URL)
+		fmt.Fprintf(w, "Building\t%v\n", s.Building)
+	} else {
+		fmt.Fprintf(w, "Name\t%v\n", s.JobName)
+		fmt.Fprintf(w, "URL\t%v\n", s.URL)
+		fmt.Fprintf(w, "Building\t%v\n", s.Building)
+		fmt.Fprintf(w, "Result\t%v\n", *s.Result)
 
-	// TODO: Jenkins returns a weird timestamp. Not quite the length of UnixNano, but not Unix either.
-	v, _ := strconv.Atoi(s.Timestamp.String()[:10])
-	t := time.Unix(int64(v), 0).UTC()
-	fmt.Fprintf(w, "Time\t%v (%v)\n", t.Format("2006-01-02 3:04PM MST"), time.Since(t))
+		// TODO: Jenkins returns a weird timestamp. Not quite the length of UnixNano, but not Unix either.
+		v, _ := strconv.Atoi(s.Timestamp.String()[:10])
+		t := time.Unix(int64(v), 0).UTC()
+		fmt.Fprintf(w, "Time\t%v (%v)\n", t.Format("2006-01-02 3:04PM MST"), time.Since(t))
+	}
 
 	w.Flush()
 	return b.String()
